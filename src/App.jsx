@@ -9,11 +9,23 @@ const hamurSeç = ["ince","orta","kalın"]
 
 
 function App() {
-  
+  const [formData, setFormData] = useState({
+    initial
+  })
 
 
 
 
+  const handleChange = (event) =>{
+    const {name, id, type, value} = event.target
+    console.log("type, name, value, checked:", type, name, value, checked)
+
+    if(type===checkbox) {
+      setFormData({...formData, [name]:cheked})
+    } else{
+      setFormData({...formData, [name]:value})
+    }
+  }
 
 
 
