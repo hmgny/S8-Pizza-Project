@@ -1,7 +1,10 @@
 
 import { Form, FormGroup, Label, Input, ButtonGroup, Button } from 'reactstrap'
 import './App.css'
+import "./index.css"
 import { useState } from 'react';
+import React from 'react';
+
 
 const malzemeler = ["Pepperoni","Sosis", "Kanada Jambonu","Tavuk Izgara","Soğan","Domates", "Mısır", "Sucuk", "Jalepeno", "Sarımsak", "Biber", "Sucuk", "Ananas", "Kabak"];
 const boyutlar=["küçük", "orta", "büyük"];
@@ -31,43 +34,46 @@ function App() {
 
 
   return (
-    <>
+
+    <div className='light-grey '>
       {/* kırmızı alan............................................ */}
-      <div>
-        <div>
-        <h1>Teknolojik Yemekler</h1>
+      <header className=" kirmiziBack">
+        <div className="just-item-center bej satisfy bold">
+        <h1 className='bold font-30 padding-m'>Teknolojik Yemekler</h1>
         </div>
         
-        <div>
-          <button>Anasayfa</button>
-          <button>Sipariş Oluştur</button>
+        <div className='center max-width font-12 barlow padding-s'>
+          <button className="kirmiziBack bej no-border">Anasayfa</button>
+          <button className="kirmiziBack bej no-border">Sipariş Oluştur</button>
         </div>
-      </div>
+      </header>
 
       {/* Position Pizza-Paragraf bölümü........................................... */}
 
-      <div>
-        <h2>Position Absolute Acı Pizza</h2>
-        <div>
-          <p>85.50₺</p>
-          <p>4.9</p>
-          <p>(200)</p>
+
+      <main className='center max-width barlow padding-l'>  
+        <div >
+          <h2 className='font-22 bold '>Position Absolute Acı Pizza</h2>
+          <div className="flex align-center between" >
+            <p className='bold font-25 dark-grey'>85.50₺</p>
+            <p className=' font-12'>4.9</p>
+            <p className=' font-12'>(200)</p>
         </div>
-        <p>Frontent Dev olarak hala position:absolute kullanıyorsan bu çok acı pizza tam sana göre. Pizza, domates, peynir ve genellikle çeşitli diğer malzemelerle kaplanmış, daha sonra geleneksel olarak odun ateşinde bir fırında yüksek sıcaklıkta pişirilen, genellikle yuvarlak, düzleştirilmiş mayalı buğday bazlı hamurdan oluşan İtalyan kökenli lezzetli bir yemektir. . Küçük bir pizzaya bazen pizzetta denir</p>
+          <p className=''>Frontent Dev olarak hala position:absolute kullanıyorsan bu çok acı pizza tam sana göre. Pizza, domates, peynir ve genellikle çeşitli diğer malzemelerle kaplanmış, daha sonra geleneksel olarak odun ateşinde bir fırında yüksek sıcaklıkta pişirilen, genellikle yuvarlak, düzleştirilmiş mayalı buğday bazlı hamurdan oluşan İtalyan kökenli lezzetli bir yemektir. . Küçük bir pizzaya bazen pizzetta denir</p>
       </div>
 
 
 
       {/* Boyut-Hamur bölümü........................................... */}
 
-      <div>
+        <div className="flex between">
         <div>
           <Form>
-            <Label htmlFor="boyut">Boyut Seç<span style={{color: "red"}}>*</span></Label>
+              <Label className="dark-grey bold font-18" htmlFor="boyut">Boyut Seç<span style={{color: "red"}}> *</span></Label>
 
             {boyutlar.map((boyut,index)=>{
               return <FormGroup>
-              <Input key={index} id={boyut} name="boyut" type="radio" onChange={handleChange} value={formData.boyut}/>{" "}
+                <Input className="font-12" key={index} id={boyut} name="boyut" type="radio" onChange={handleChange} value={formData.boyut}/>{" "}
               <Label htmlFor={boyut}>{boyut}</Label>
             </FormGroup>
             })}
@@ -75,8 +81,8 @@ function App() {
           </Form>
         </div>
 
-        <div>
-          <Label htmlFor="hamurlar">Hamur Seç<span style={{color: "red"}}>*</span></Label>
+          <div className='flex column'>
+            <Label className="bold font-18 dark-grey" htmlFor="hamurlar">Hamur Seç<span style={{color: "red"}}> *</span></Label>
           <select onChange={handleChange} value={formData.hamur} >
             {hamurSeç.map((hamur)=>{
               return <option value={hamur}>{hamur}</option>
@@ -88,12 +94,12 @@ function App() {
       {/* Ek Malzemeler................................................... */}
 
       <div>
-        <Form>
-          <h2>Ek Malzemeler</h2>
+          <Form >
+            <h2 className='dark-grey bold font-18'>Ek Malzemeler</h2>
           <p>En Fazla 10 malzeme seçebilirsiniz. 5₺ <span style={{color: "red"}}>*</span></p>
 
           { malzemeler.map((malz,index)=>{
-            return <FormGroup key={index}>
+              return <FormGroup className='flex' key={index}>
             <Input id={malz} name="malzeme" type="checkbox" onChange={handleChange} checked={formData.malz}/>{" "}
             <Label htmlFor={malz}>{malz}</Label>
           </FormGroup>
@@ -103,43 +109,44 @@ function App() {
       </div>
 
       {/* Sipariş Notu........................................... */}
+        <footer>
       <div>
-        <div>
-        <FormGroup>
-          <Label>Sipariş Notu</Label>
-          <Input name="not" type="textarea" placeholder='Siparişinize eklemek istediğiniz bir not var mı?'onChange={handleChange} value={formData.not}/>
+          <FormGroup >
+            <Label className='dark-grey bold font-18'>Sipariş Notu</Label>
+            <Input className="font-12" name="not" type="textarea" placeholder='Siparişinize eklemek istediğiniz bir not var mı?'onChange={handleChange} value={formData.not}/>
         </FormGroup>
         </div>
         
         <hr></hr>  {/* ÇİZGİ........................................... */}
 
-        <div>
-          <ButtonGroup>
-            <Button>-</Button>
-            <Button>1</Button>
-            <Button>+</Button>
+          <div className='flex gap-s between'>
+            <ButtonGroup className='max-height btn-min-width'>
+              <Button color="warning">-</Button>
+              <Button color="link">1</Button>
+              <Button color="warning">+</Button>
           </ButtonGroup>
 
-          <div>
-            <h2>Sipariş Toplamı</h2>
-            <div>
+            <div className='flex column border min-width'>
+              <div className='padding-m'>
+                <h2 className='font-18 bold text-center'>Sipariş Toplamı</h2>
+                <div className="flex around ">
               <p>Seçimler</p>
-              <p>25</p>
+                  <p>25.00₺</p>
             </div>
 
-            <div>
+                <div className='kirmizi flex around'>
               <p>Toplam</p>
-              <p>110</p>
+                  <p>110.50₺</p>
+                </div>
+              </div>
+              <Button color="warning">SİPARİŞ VER</Button>
             </div>
           </div>
-
-          <Button>SİPARİŞ VER</Button>
-
-        </div>
+        </footer>
+      </main>
       </div>
-     
-    </>
   )
 }
 
 export default App
+
