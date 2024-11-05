@@ -1,6 +1,7 @@
 
 import { Form, FormGroup, Label, Input, ButtonGroup, Button } from 'reactstrap'
 import './App.css'
+import { useState } from 'react';
 
 const malzemeler = ["Pepperoni","Sosis", "Kanada Jambonu","Tavuk Izgara","Soğan","Domates", "Mısır", "Sucuk", "Jalepeno", "Sarımsak", "Biber", "Sucuk", "Ananas", "Kabak"];
 const boyutlar=["küçük", "orta", "büyük"];
