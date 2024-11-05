@@ -63,11 +63,11 @@ function App() {
       <div>
         <div>
           <Form>
-            <h2>Boyut Seç <span style={{color: "red"}}>*</span></h2>
+            <Label htmlFor="boyut">Boyut Seç<span style={{color: "red"}}>*</span></Label>
 
-            {boyutlar.map((boyut)=>{
+            {boyutlar.map((boyut,index)=>{
               return <FormGroup>
-              <Input id={boyut} name="boyut" type="radio"/>{" "}
+              <Input key={index} id={boyut} name="boyut" type="radio" onChange={handleChange} value={formData.boyut}/>{" "}
               <Label htmlFor={boyut}>{boyut}</Label>
             </FormGroup>
             })}
@@ -76,11 +76,11 @@ function App() {
         </div>
 
         <div>
-          <h2>Hamur Seç<span style={{color: "red"}}>*</span></h2>
-          <select >
-            <option value="Hamur Kalınlığı" placeholder="Hamur Kalınlığı">İnce</option>
-            <option value="Hamur Kalınlığı" placeholder="Hamur Kalınlığı">Orta</option>
-            <option value="Hamur Kalınlığı" placeholder="Hamur Kalınlığı">Kalın</option>
+          <Label htmlFor="hamurlar">Hamur Seç<span style={{color: "red"}}>*</span></Label>
+          <select onChange={handleChange} value={formData.hamur} >
+            {hamurSeç.map((hamur)=>{
+              return <option value={hamur}>{hamur}</option>
+            })}
           </select>
         </div>
       </div>
@@ -94,7 +94,7 @@ function App() {
 
           { malzemeler.map((malz,index)=>{
             return <FormGroup key={index}>
-            <Input id={malz} name="malzeme" type="checkbox"/>{" "}
+            <Input id={malz} name="malzeme" type="checkbox" onChange={handleChange} checked={formData.malz}/>{" "}
             <Label htmlFor={malz}>{malz}</Label>
           </FormGroup>
           })}
@@ -107,7 +107,7 @@ function App() {
         <div>
         <FormGroup>
           <Label>Sipariş Notu</Label>
-          <Input type="textarea" placeholder='Siparişinize eklemek istediğiniz bir not var mı?'/>
+          <Input name="not" type="textarea" placeholder='Siparişinize eklemek istediğiniz bir not var mı?'onChange={handleChange} value={formData.not}/>
         </FormGroup>
         </div>
         
