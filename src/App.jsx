@@ -2,14 +2,21 @@
 import { Form, FormGroup, Label, Input, ButtonGroup, Button } from 'reactstrap'
 import './App.css'
 import "./index.css"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
+import axios from 'axios';
 
 
-const malzemeler = ["Pepperoni","Sosis", "Kanada Jambonu","Tavuk Izgara","Soğan","Domates", "Mısır", "Sucuk", "Jalepeno", "Sarımsak", "Biber", "Sucuk", "Ananas", "Kabak"];
+const malzemeler = ["Pepperoni","Sosis", "Kanada Jambonu","Tavuk Izgara","Soğan","Domates", "Mısır", "Sucuk", "Jalepeno", "Sarımsak", "Biber", "Ananas", "Kabak"];
 const boyutlar=["küçük", "orta", "büyük"];
-const hamurSeç = ["ince","orta","kalın"]
+const hamurSeç = ["ince","orta","kalın"];
 
+const initial ={
+  boyut:"-1",
+  hamurlar:"-1",
+  malzeme: [],
+  not: ""
+}
 
 
 function App() {
@@ -44,18 +51,83 @@ function App() {
   }
 
 
-
-
+ 
+ 
 
   const handleChange = (event) =>{
-    const {name, id, type, value} = event.target
+    const {name, checked, type, value} = event.target
     console.log("type, name, value, checked:", type, name, value, checked)
+    
 
-    if(type===checkbox) {
-      setFormData({...formData, [name]:cheked})
+    if(type==="checkbox") {
+      setFormData({...formData, [name]:checked})
     } else{
       setFormData({...formData, [name]:value})
     }
+
+
+    if(name==="boyut") {
+      if(value === "") {
+        setErrors({...errors, [name]:"bir boyut seçiniz"})
+      } else {
+        setErrors({...errors, [name]:""})
+      }
+    }
+
+    if(name==="hamurlar") {
+      if(name === "") {
+        setErrors({...errors, [name]:"bir hamur kalınlığı seçiniz"})
+      } else {
+        setErrors({...errors, [name]: {name}})
+      }
+    }
+
+    if(name === "malzeme" && checked === true) {
+      setMalzemeList([...malzemeList, "yenimalzeme"]);
+    }
+    console.log(malzemeList.length);
+
+    if(name === "malzeme")
+      if(malzemeList.length<4 || malzemeList.length>10) {
+        setErrors({...errors, [name]:"en az 4 en fazla 10 adet malzeme seçiniz"})
+      } else {
+        setErrors({...errors, [name]:""})
+
+      }
+    
+    if(name === "not")
+      if(not.lenght<3) {
+        setErrors({...errors, [name]:"yorum 3 karakterden fazla olmalı"})
+      } else {
+        setErrors({...errors, [name]: {name}})
+      }
+    
+    setErrors({...errors})
+    console.log(setErrors({...errors}))
+  }
+
+  
+  useEffect(()=>{
+    if((formData.boyut && !errors.boyut) && (formData.hamurlar && !errors.hamurlar) && (formData.malzeme && !errors.malzeme) && (formData.not && !errors.not) && (formData.not && !errors.not)){
+      setIsValid(true)
+    }else {
+      setIsValid(false)
+    }
+  })
+
+  const handleSubmit = (event) =>{
+    event.preventDefault()
+    if(!isValid) return 
+
+    axios
+    .post("https://reqres.in/api/pizza")
+    .then((response)=>{
+      setFormData(initial)      //form başlangıç durumuna geri döner
+      console.log(response.data)  //burdaki datayı sipariş özetinde yazdır
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
   }
 
 
@@ -85,93 +157,93 @@ function App() {
             <p className='bold font-25 dark-grey'>85.50₺</p>
             <p className=' font-12'>4.9</p>
             <p className=' font-12'>(200)</p>
-        </div>
+          </div>
           <p className=''>Frontent Dev olarak hala position:absolute kullanıyorsan bu çok acı pizza tam sana göre. Pizza, domates, peynir ve genellikle çeşitli diğer malzemelerle kaplanmış, daha sonra geleneksel olarak odun ateşinde bir fırında yüksek sıcaklıkta pişirilen, genellikle yuvarlak, düzleştirilmiş mayalı buğday bazlı hamurdan oluşan İtalyan kökenli lezzetli bir yemektir. . Küçük bir pizzaya bazen pizzetta denir</p>
-      </div>
+        </div>
 
 
 
-      {/* Boyut-Hamur bölümü........................................... */}
+        {/* Boyut-Hamur bölümü........................................... */}
 
         <div className="flex between">
-        <div>
-          <Form>
+          <div>
+            <Form>
               <Label className="dark-grey bold font-18" htmlFor="boyut">Boyut Seç<span style={{color: "red"}}> *</span></Label>
 
-            {boyutlar.map((boyut,index)=>{
-              return <FormGroup>
+              {boyutlar.map((boyut,index)=>{
+                return <FormGroup>
                 <Input className="font-12" key={index} id={boyut} name="boyut" type="radio" onChange={handleChange} value={formData.boyut}/>{" "}
-              <Label htmlFor={boyut}>{boyut}</Label>
-            </FormGroup>
-            })}
-  
-          </Form>
-        </div>
+                <Label htmlFor={boyut}>{boyut}</Label>
+              </FormGroup>
+              })}
+    
+            </Form>
+          </div>
 
           <div className='flex column'>
             <Label className="bold font-18 dark-grey" htmlFor="hamurlar">Hamur Seç<span style={{color: "red"}}> *</span></Label>
-          <select onChange={handleChange} value={formData.hamur} >
-            {hamurSeç.map((hamur)=>{
-              return <option value={hamur}>{hamur}</option>
-            })}
-          </select>
+            <select onChange={handleChange} value={formData.hamurlar} >
+              {hamurSeç.map((hamur)=>{
+                return <option value={hamur}>{hamur}</option>
+              })}
+            </select>
+          </div>
         </div>
-      </div>
-      
-      {/* Ek Malzemeler................................................... */}
+        
+        {/* Ek Malzemeler................................................... */}
 
-      <div>
+        <div>
           <Form >
             <h2 className='dark-grey bold font-18'>Ek Malzemeler</h2>
-          <p>En Fazla 10 malzeme seçebilirsiniz. 5₺ <span style={{color: "red"}}>*</span></p>
+            <p>En Fazla 10 malzeme seçebilirsiniz. 5₺ <span style={{color: "red"}}>*</span></p>
 
-          { malzemeler.map((malz,index)=>{
+            { malzemeler.map((malz,index)=>{
               return <FormGroup className='flex' key={index}>
-            <Input id={malz} name="malzeme" type="checkbox" onChange={handleChange} checked={formData.malz}/>{" "}
-            <Label htmlFor={malz}>{malz}</Label>
-          </FormGroup>
-          })}
-          
-        </Form>
-      </div>
+              <Input id={malz} name="malzeme" type="checkbox" onChange={handleChange} checked={formData.malz}/>{" "}
+              <Label htmlFor={malz}>{malz}</Label>
+            </FormGroup>
+            })}
+            
+          </Form>
+        </div>
 
-      {/* Sipariş Notu........................................... */}
+        {/* Sipariş Notu........................................... */}
         <footer>
-      <div>
+          <div>
           <FormGroup >
             <Label className='dark-grey bold font-18'>Sipariş Notu</Label>
             <Input className="font-12" name="not" type="textarea" placeholder='Siparişinize eklemek istediğiniz bir not var mı?'onChange={handleChange} value={formData.not}/>
-        </FormGroup>
-        </div>
-        
-        <hr></hr>  {/* ÇİZGİ........................................... */}
+          </FormGroup>
+          </div>
+          
+          <hr></hr>  {/* ÇİZGİ........................................... */}
 
           <div className='flex gap-s between'>
             <ButtonGroup className='max-height btn-min-width'>
               <Button onClick={azalt} className="arti" color="warning">-</Button>
               <Button className="adet" color="link">{adet}</Button>
               <Button onClick={arttir} className="eksi" color="warning">+</Button>
-          </ButtonGroup>
+            </ButtonGroup>
 
             <div className='flex column border min-width'>
               <div className='padding-m'>
                 <h2 className='font-18 bold text-center'>Sipariş Toplamı</h2>
                 <div className="flex around ">
-              <p>Seçimler</p>
+                  <p>Seçimler</p>
                   <p>{secim}₺</p>
-            </div>
+                </div>
 
                 <div className='kirmizi flex around'>
-              <p>Toplam</p>
+                  <p>Toplam</p>
                   <p>{toplam}₺</p>
                 </div>
               </div>
-              <Button color="warning">SİPARİŞ VER</Button>
+              <Button disabled={!isValid} onSubmit={handleSubmit} type="submit"className="siparişVer"color="warning">SİPARİŞ VER</Button>
             </div>
           </div>
         </footer>
       </main>
-      </div>
+    </div>
   )
 }
 
