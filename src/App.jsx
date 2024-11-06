@@ -13,9 +13,36 @@ const hamurSeç = ["ince","orta","kalın"]
 
 
 function App() {
-  const [formData, setFormData] = useState({
-    initial
-  })
+  const [formData, setFormData] = useState(initial)
+  const [isValid, setIsValid] =useState(false)
+  const [errors, setErrors] =useState([])
+  const [malzemeList, setMalzemeList] =useState([])
+  const [adet, setAdet] =useState(1)
+  const [secimler, setSecimler] =useState(0)
+  const [toplam, setToplam] = useState(85)
+
+ 
+  const arttir = () => {
+    setAdet(adet+1)
+  }
+
+  const azalt = () => {
+    if(adet > 1 ) {
+      setAdet(adet-1)
+    }
+    
+  }
+
+  const secim = () => {
+    if(malzemeList.length > 4 && malzemeList < 10) {
+      setSecimler(secimler + (malzemeList.length * 5))
+    }
+  }
+
+  const toplamTutar = () => {
+    setToplam(toplam + secimler)
+  }
+
 
 
 
@@ -121,9 +148,9 @@ function App() {
 
           <div className='flex gap-s between'>
             <ButtonGroup className='max-height btn-min-width'>
-              <Button color="warning">-</Button>
-              <Button color="link">1</Button>
-              <Button color="warning">+</Button>
+              <Button onClick={azalt} className="arti" color="warning">-</Button>
+              <Button className="adet" color="link">{adet}</Button>
+              <Button onClick={arttir} className="eksi" color="warning">+</Button>
           </ButtonGroup>
 
             <div className='flex column border min-width'>
@@ -131,12 +158,12 @@ function App() {
                 <h2 className='font-18 bold text-center'>Sipariş Toplamı</h2>
                 <div className="flex around ">
               <p>Seçimler</p>
-                  <p>25.00₺</p>
+                  <p>{secim}₺</p>
             </div>
 
                 <div className='kirmizi flex around'>
               <p>Toplam</p>
-                  <p>110.50₺</p>
+                  <p>{toplam}₺</p>
                 </div>
               </div>
               <Button color="warning">SİPARİŞ VER</Button>
