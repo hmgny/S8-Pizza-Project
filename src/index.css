@@ -70,6 +70,9 @@
 .gap-l {
   gap: 3rem;
 }
+.marginTop {
+  margin-top: 2rem;
+}
 
 
 .text-center {
@@ -108,6 +111,9 @@
   color:#CE2829
 }
 
+.siyahBack {
+  background-color: black;
+}
 .light-grey {
   color: #5F5F5F
 }
@@ -119,9 +125,18 @@
   color:#FAF7F2 ;
 }
 
+.bejBack {
+  background-color:#FAF7F2 ;
+}
+
 .beyaz {
   color:#FFFFFF;
 }
+
+.beyazBack {
+  background-color: #FFFFFF;
+}
+
 
 .bold{
   font-weight: bold;
@@ -166,6 +181,9 @@
 .font-30 {
   font-size: 30px;
 }
+.font-40 {
+  font-size: 40px;
+}
 
 .font-45 {
   font-size: 45px;
@@ -192,12 +210,99 @@
   max-width: 390px;
 }
 
+.max-width-250 {
+  max-width: 250px;
+}
+
 .tekno-img{
   width: 220px;
 }
 
-.buton-kenar {
+.buton-sari {
   border-radius: 15px;
   width: 120px;
   aspect-ratio: 4/1;
 }
+
+.buton-sipariş {
+  border-radius: 15px;
+  width: 120px;
+  aspect-ratio: 4/1;
+  color:#CE2829;
+  border-color: white;
+
+}
+
+.buton {
+  display: flex;
+  background-color: white;
+  margin:1rem;
+  padding: 0.5rem 1rem ;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
+  border-color: white;
+  gap:0.5rem
+
+} 
+
+.butonSiyah {
+  display: flex;
+  background-color: black;
+  color:white;
+  margin:1rem;
+  padding: 0.5rem 1rem ;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
+  border-color: white;
+  gap:0.5rem
+}
+
+.italik {
+  font-style: italic;
+}
+
+.özel {
+  background-image: url(/public/cta/kart-1.png);
+  border-radius: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 2rem 8rem 2rem 2rem;
+  
+  
+ 
+  
+}
+
+.hackathlon {
+  background-image: url(/public/cta/kart-2.png);
+  border-radius: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 15rem 2rem 2rem;
+  
+  
+  
+}
+
+.cok {
+  background-image: url(/public/cta/kart-3.png);
+  border-radius: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 15rem 2rem 2rem;
+ 
+  
+  
+}
+
+
+
