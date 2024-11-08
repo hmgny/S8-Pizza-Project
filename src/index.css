@@ -164,7 +164,9 @@
   padding: 1rem 0
 }
 
-
+.font-8 {
+  font-size: 8px;
+}
 
 .font-12 {
   font-size: 12px;
@@ -189,6 +191,11 @@
   font-size: 45px;
 }
 
+.border-beyaz {
+  border: 1px solid white ;
+  width: 500;
+  padding: 0.5rem 4rem
+}
 
 .backgroundİmg {
   background-image: url(/public/home-banner.png);
