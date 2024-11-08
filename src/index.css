@@ -10,6 +10,9 @@
   justify-items: center;
 
 }
+.just-center {
+  justify-content: center;
+}
 
 .column {
   flex-direction: column;
@@ -68,6 +71,7 @@
   gap: 3rem;
 }
 
+
 .text-center {
   text-align: center;
 }
@@ -92,6 +96,9 @@
 
 .sari {
   color:#FDC913;
+}
+.sariBack {
+  background-color:#FDC913 ;
 }
 
 .kirmiziBack {
@@ -126,6 +133,9 @@
 .border {
   border: 1px solid #292929;
 }
+.padding-xl {
+  padding: 6rem 0
+}
 
 .padding-l {
   padding: 2rem 0
@@ -155,4 +165,39 @@
 }
 .font-30 {
   font-size: 30px;
+}
+
+.font-45 {
+  font-size: 45px;
+}
+
+
+.backgroundİmg {
+  background-image: url(/public/home-banner.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 16/9;
+}
+
+.backgroundRed {
+  background-color: #CE2829;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 16/9;
+}
+
+.max-width-s {
+  max-width: 390px;
+}
+
+.tekno-img{
+  width: 220px;
+}
+
+.buton-kenar {
+  border-radius: 15px;
+  width: 120px;
+  aspect-ratio: 4/1;
 }
