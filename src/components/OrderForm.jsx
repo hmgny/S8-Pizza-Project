@@ -11,8 +11,8 @@ const boyutlar=["küçük", "orta", "büyük"];
 const hamurSeç = ["ince","orta","kalın"];
 
 const initial ={
-  boyut:"-1",
-  hamurlar:"-1",
+  boyut:"",
+  hamurlar:"",
   malzeme: [],
   not: ""
 }
@@ -22,7 +22,6 @@ function OrderForm() {
   const [formData, setFormData] = useState(initial)
   const [isValid, setIsValid] =useState(false)
   const [errors, setErrors] =useState({})
-  const [malzemeList, setMalzemeList] =useState([])
   const [adet, setAdet] =useState(1)
   const [secimler, setSecimler] =useState(0)
   const [toplam, setToplam] = useState(85.50)
@@ -38,17 +37,10 @@ function OrderForm() {
     }
     
   }
+  useEffect(()=>{
+    setToplam(85.50* adet + secimler)
+  },[adet,secimler])
 
-  const secim = () => {
-    if(malzemeList.length > 4 && malzemeList < 10) {
-      setSecimler(secimler + malzemeList.length * 5)
-    }
-  }
-
-  const toplamTutar = () => {
-    setToplam(toplam*adet)
-  }
- 
 
   const handleChange = (event) =>{
     const {name, checked, type, value} = event.target
@@ -60,6 +52,7 @@ function OrderForm() {
     } else{
       setFormData({...formData, [name]:value})
     }
+    console.log(formData.malzeme)
 
 
     if(name==="boyut") {
@@ -71,20 +64,16 @@ function OrderForm() {
     }
 
     if(name==="hamurlar") {
-      if(name === "") {
+      if(formData.hamurlar === "") {
         setErrors({...errors, [name]:"bir hamur kalınlığı seçiniz"})
       } else {
-        setErrors({...errors, [name]: {name}})
+        setErrors({...errors, [name]:""})
       }
     }
 
-    if(name === "malzeme" && checked === true) {
-      setMalzemeList({...malzemeList,  [name]: "yenimalzeme"});
-    }
-    console.log(malzemeList.length);
 
-    if(name === "malzeme")
-      if(malzemeList.length<4 || malzemeList.length>10) {
+    if(type==="checkbox" && name === "malzeme")
+      if(formData.malzeme.includes(malz).length<4 || formData.malzeme.includes(malz).length>10) {
         setErrors({...errors, [name]: "en az 4 en fazla 10 adet malzeme seçiniz"})
       } else {
         setErrors({...errors, [name]:""})
@@ -92,7 +81,7 @@ function OrderForm() {
       }
     
     if(name === "not")
-      if(not.lenght<3) {
+      if(formData.not.length<3) {
         setErrors({...errors, [name]:"yorum 3 karakterden fazla olmalı"})
       } else {
         setErrors({...errors, [name]:"" })
@@ -104,12 +93,12 @@ function OrderForm() {
 
   
   useEffect(()=>{
-    if((formData.boyut && !errors.boyut) && (formData.hamurlar && !errors.hamurlar) && (formData.malzeme && !errors.malzeme) && (formData.not && !errors.not) && (formData.not && !errors.not)){
+    if((formData.boyut && !errors.boyut) && (formData.hamurlar && !errors.hamurlar) && (formData.malzeme.includes(malz) && !errors.malzeme) && (formData.not && !errors.not)){
       setIsValid(true)
     }else {
       setIsValid(false)
     }
-  })
+  },[formData, errors])
 
   const handleSubmit = (event) =>{
     event.preventDefault()
@@ -118,7 +107,9 @@ function OrderForm() {
     axios
     .post("https://reqres.in/api/pizza")
     .then((response)=>{
-      setFormData(initial)      //form başlangıç durumuna geri döner
+      setFormData(initial)
+      setAdet(1)
+      setSecimler(0)      //form başlangıç durumuna geri döner
       console.log(response.data)  //burdaki datayı sipariş özetinde yazdır
     })
     .catch((error)=>{
@@ -173,7 +164,9 @@ function OrderForm() {
                         name="boyut" 
                         type="radio" 
                         onChange={handleChange} 
-                        value={formData.boyut}/>
+                        value={formData.boyut}
+                        data-cy="boyut"/>
+                        
                         {errors.boyut && <div className='error'>{errors.boyut}</div>}
                 {" "}
                 <Label htmlFor={boyut}>{boyut}</Label>
@@ -185,7 +178,7 @@ function OrderForm() {
 
           <div className='flex column'>
             <Label className="bold font-18 dark-grey" htmlFor="hamurlar">Hamur Seç<span style={{color: "red"}}> *</span></Label>
-            <select onChange={handleChange} value={formData.hamurlar} >
+            <select onChange={handleChange} value={formData.hamur} data-cy="hamur" >
               {hamurSeç.map((hamur,index)=>{
                 return <option key={index} value={hamur}>{hamur}</option>
               })}
@@ -207,7 +200,9 @@ function OrderForm() {
                       name="malzeme" 
                       type="checkbox" 
                       onChange={handleChange} 
-                      checked={formData.malz}/>
+                      checked={formData.malzeme.includes(malz)}
+                      data-cy="malzeme"/>
+                      
                       {" "}
                       {errors.malzeme && <div className='error'>{errors.malzeme}</div>}
               <Label htmlFor={malz}>{malz}</Label>
@@ -227,7 +222,8 @@ function OrderForm() {
                     type="textarea" 
                     placeholder='Siparişinize eklemek istediğiniz bir not var mı?'
                     onChange={handleChange} 
-                    value={formData.not}/>
+                    value={formData.not}
+                    data-cy="not"/>
                     {errors.not && <div className='error'>{errors.not}</div>}
           </FormGroup>
           </div>
