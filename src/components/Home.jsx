@@ -14,7 +14,7 @@ export default function Home() {
               <span className='center'>KOD ACIKTIRIR </span>
               <span className='center'>PİZZA, DOYURUR</span>
             </div>
-            <button className="sariBack no-border buton-kenar font-12">ACIKTIM</button>
+            <button onClick={siparis} className="sariBack no-border buton-sari font-12">ACIKTIM</button>
           </div>
         </>
     );
