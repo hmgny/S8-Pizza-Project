@@ -171,6 +171,9 @@
 .font-12 {
   font-size: 12px;
 }
+.font-15 {
+  font-size: 15px;
+}
 .font-18 {
   font-size: 18px;
 }
@@ -227,7 +230,7 @@
 
 .buton-sari {
   border-radius: 15px;
-  width: 120px;
+  width: 140px;
   aspect-ratio: 4/1;
 }
 
