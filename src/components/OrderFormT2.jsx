@@ -2,6 +2,7 @@ import { Form, FormGroup, Label, Input, ButtonGroup, Button } from "reactstrap";
 import { useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom"; // Import useHistory
 
 const malzemeler = [
   "Pepperoni",
@@ -36,6 +37,7 @@ function OrderFormT2() {
   const [adet, setAdet] = useState(1);
   const [secimler, setSecimler] = useState(0);
   const [toplam, setToplam] = useState(85.5);
+  const history = useHistory();
 
   const arttir = () => {
     setAdet(adet + 1);
@@ -45,16 +47,6 @@ function OrderFormT2() {
     if (adet > 1) {
       setAdet(adet - 1);
     }
-  };
-
-  const secim = () => {
-    if (malzemeList.length > 4 && malzemeList < 10) {
-      setSecimler(secimler + malzemeList.length * 5);
-    }
-  };
-
-  const toplamTutar = () => {
-    setToplam(toplam * adet);
   };
 
   const handleChange = (event) => {
@@ -76,11 +68,16 @@ function OrderFormT2() {
     }
 
     if (name === "boyut") {
-      if (value === "") {
-        setErrors({ ...errors, [name]: "bir boyut seçiniz" });
-      } else {
-        setErrors({ ...errors, [name]: "" });
+      let newPrice = 75.9;
+      if (value === "küçük") {
+        newPrice = 75.9;
+      } else if (value === "orta") {
+        newPrice = 87.9;
+      } else if (value === "büyük") {
+        newPrice = 100;
       }
+      setToplam(newPrice);
+      setFormData({ ...formData, boyut: value });
     }
 
     if (name === "hamurlar") {
@@ -100,6 +97,7 @@ function OrderFormT2() {
       } else {
         setErrors({ ...errors, [name]: "" });
       }
+      setSecimler((prevSecimler) => prevSecimler + (checked ? 5 : -5));
     }
 
     if (name === "not") {
@@ -131,17 +129,36 @@ function OrderFormT2() {
     } else {
       setIsValid(false);
     }
-  });
+    setToplam((prevToplam) => {
+      let basePrice = 75.9;
+      if (formData.boyut === "orta") {
+        basePrice = 87.9;
+      } else if (formData.boyut === "büyük") {
+        basePrice = 100;
+      }
+      return (basePrice + secimler) * adet;
+    });
+  }, [formData, secimler, adet, errors]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!isValid) return;
+    if (isValid) return;
 
     axios
       .post("https://reqres.in/api/pizza")
       .then((response) => {
-        setFormData(initial); //form başlangıç durumuna geri döner
-        console.log(response.data); //burdaki datayı sipariş özetinde yazdır
+        setFormData(initial);
+        console.log(response.data);
+        history.push({
+          pathname: "/Success",
+          state: {
+            boyut: formData.boyut,
+            hamurlar: formData.hamurlar,
+            malzeme: malzemeList,
+            secimler: secimler * adet,
+            toplam: toplam.toFixed(2),
+          },
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -168,7 +185,15 @@ function OrderFormT2() {
         <div>
           <h2 className="font-22 bold ">Position Absolute Acı Pizza</h2>
           <div className="flex align-center between">
-            <p className="bold font-25 dark-grey">85.50₺</p>
+            <p className="bold font-25 dark-grey">
+              {formData.boyut === "küçük"
+                ? "75.90₺"
+                : formData.boyut === "orta"
+                ? "87.90₺"
+                : formData.boyut === "büyük"
+                ? "100.00₺"
+                : "85.50₺"}
+            </p>
             <p className=" font-12">4.9</p>
             <p className=" font-12">(200)</p>
           </div>
@@ -193,15 +218,15 @@ function OrderFormT2() {
               </Label>
               {boyutlar.map((boyut, index) => {
                 return (
-                  <FormGroup>
+                  <FormGroup key={index}>
                     <Input
                       className="font-12"
-                      key={index}
                       id={boyut}
                       name="boyut"
                       type="radio"
                       onChange={handleChange}
-                      value={formData.boyut}
+                      value={boyut}
+                      checked={formData.boyut === boyut}
                     />
                     {errors.boyut && (
                       <div className="error">{errors.boyut}</div>
@@ -217,16 +242,19 @@ function OrderFormT2() {
             <Label className="bold font-18 dark-grey" htmlFor="hamurlar">
               Hamur Seç<span style={{ color: "red" }}> *</span>
             </Label>
-            <select onChange={handleChange} value={formData.hamur}>
-              {hamurSeç.map((hamur, index) => {
-                return (
-                  <option key={index} value={hamur}>
-                    {hamur}
-                  </option>
-                );
-              })}
+            <select
+              name="hamurlar"
+              onChange={handleChange}
+              value={formData.hamurlar}
+            >
+              <option value="-1">Hamur Seç</option>
+              {hamurSeç.map((hamur, index) => (
+                <option key={index} value={hamur}>
+                  {hamur}
+                </option>
+              ))}
             </select>
-            {errors.hamur && <div className="error">{errors.hamur}</div>}
+            {errors.hamurlar && <div className="error">{errors.hamurlar}</div>}
           </div>
         </div>
 
@@ -299,16 +327,16 @@ function OrderFormT2() {
                 <h2 className="font-18 bold text-center">Sipariş Toplamı</h2>
                 <div className="flex around ">
                   <p>Seçimler</p>
-                  <p>{secimler}₺</p>
+                  <p>{secimler * adet}₺</p>
                 </div>
 
                 <div className="kirmizi flex around">
                   <p>Toplam</p>
-                  <p>{toplam}₺</p>
+                  <p>{toplam.toFixed(2)}₺</p>
                 </div>
               </div>
               <Button
-                disabled={!isValid}
+                disabled={isValid}
                 onClick={handleSubmit}
                 type="submit"
                 className="siparişVer"
