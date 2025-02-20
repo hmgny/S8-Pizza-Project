@@ -281,9 +281,6 @@
   background-position: center;
   padding: 2rem 8rem 2rem 2rem;
   
-  
- 
-  
 }
 
 .hackathlon {
@@ -309,9 +306,126 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 15rem 2rem 2rem;
- 
   
-  
+}
+
+@media (max-width: 768px) {
+  .max-width {
+    max-width: 100%;
+    margin: 0 1rem;
+  }
+
+  .min-width {
+    min-width: 100%;
+    margin: 0 1rem;
+  }
+
+  .btn-min-width {
+    min-width: 140px;
+  }
+
+  .padding-l {
+    padding: 1rem 0;
+  }
+
+  .padding-m {
+    padding: 0.75rem 0;
+  }
+
+  .padding-s {
+    padding: 0.5rem 0;
+  }
+
+  .font-25 {
+    font-size: 20px;
+  }
+
+  .font-30 {
+    font-size: 25px;
+  }
+
+  .font-40 {
+    font-size: 30px;
+  }
+
+  .font-45 {
+    font-size: 35px;
+  }
+
+  .border-beyaz {
+    width: 100%;
+    padding: 0.5rem 1rem;
+  }
+
+  .backgroundİmg {
+    aspect-ratio: auto;
+  }
+
+  .backgroundRed {
+    aspect-ratio: auto;
+  }
+
+  .max-width-s {
+    max-width: 100%;
+  }
+
+  .max-width-250 {
+    max-width: 100%;
+  }
+
+  .tekno-img {
+    width: 150px;
+  }
+
+  .buton-sari,
+  .buton-sipariş {
+    width: 140px;
+  }
+
+  .buton,
+  .butonSiyah {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .özel,
+  .hackathlon,
+  .cok {
+    padding: 1rem 2rem 1rem 1rem;
+  }
+
+  .flex.just-center,
+  .flex.between,
+  .flex.around {
+    flex-direction: column;
+  }
+
+  .gap-s,
+  .gap-m,
+  .gap-l {
+    gap: 0.5rem;
+  }
+
+  .font-45 {
+    font-size: 25px;
+  }
+
+  .font-30 {
+    font-size: 20px;
+  }
+
+  .font-22 {
+    font-size: 18px;
+  }
+
+  .wrap > .buton,
+  .wrap > .butonSiyah {
+    width: calc(50% - 1rem);
+  }
+
+  .flex.column > .flex {
+    flex-direction: column;
+  }
 }
 
 
